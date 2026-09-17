@@ -1,113 +1,83 @@
-# Flattening a Nested List Using an Iterator
+# Ex9 Finding the Longest Length of Nested Set in a Permutation Array
 ## DATE: 17-09-2026
 ## AIM:
-To design and implement a class NestedIterator that flattens a nested list of integers such that all integers can be accessed sequentially using an iterator interface (next() and hasNext()).
+To write a program that finds the length of the longest set s[k] defined as s[k] = { nums[k], nums[nums[k]], nums[nums[nums[k]]], … },where the iteration stops before a duplicate element occurs.
+
+The task is to return the maximum size among all such sets.
 ## Algorithm
-1.Start the program.
+1.Create a visited array to mark elements already used in any set.
 
-2.Define an interface-like class NestedInteger that can represent either a single integer or a nested list.
+2.For each index k, if it is not visited, start building the set S[k].
 
-3.Use a stack or recursion to flatten all integers from the nested list into a single list.
+3.Keep moving to nums[current], marking each element as visited.
 
-4.Store the flattened list and maintain an index to track the current element.
+4.Count each step until you reach a visited element (duplicate).
 
-5.Implement next() to return the next integer and hasNext() to check if more integers exist.
+5.Update the maximum count found so far and return it.  
 
-6.Test the iterator with a sample nested list.
-
-7.Stop the program.
 ## Program:
 ```
 /*
-Program to find Flattening a Nested List Using an Iterator
+program that removes all nodes from a linked list whose value matches a given integer (val) and returns the new head of the modified linked list.
 Developed by: YASHWANTH K
-RegisterNumber: 212224040369
-import java.util.*;
+RegisterNumber:  212224040369
+*/
+import java.util.Scanner;
 
-interface NestedInteger {
-    boolean isInteger();
-    Integer getInteger();
-    List<NestedInteger> getList();
-}
+class LongestSet {
 
-class NI implements NestedInteger {
-    private Integer value;
-    private List<NestedInteger> list;
+    public static int longestSetLength(int[] nums) {
+        boolean[] visited = new boolean[nums.length];
+        int maxLength = 0;
 
-    NI(Integer value) {
-        this.value = value;
-        this.list = null;
-    }
+        for (int i = 0; i < nums.length; i++) {
+            if (!visited[i]) {
+                int count = 0;
+                int current = i;
 
-    NI(List<NestedInteger> list) {
-        this.list = list;
-        this.value = null;
-    }
+                while (!visited[current]) {
+                    visited[current] = true;
+                    current = nums[current];
+                    count++;
+                }
 
-    public boolean isInteger() {
-        return value != null;
-    }
-
-    public Integer getInteger() {
-        return value;
-    }
-
-    public List<NestedInteger> getList() {
-        return list;
-    }
-}
-
-class NestedIterator implements Iterator<Integer> {
-    private List<Integer> flattenedList = new ArrayList<>();
-    private int index = 0;
-
-    public NestedIterator(List<NestedInteger> nestedList) {
-        flatten(nestedList);
-    }
-
-    private void flatten(List<NestedInteger> nestedList) {
-        for (NestedInteger ni : nestedList) {
-            if (ni.isInteger()) {
-                flattenedList.add(ni.getInteger());
-            } else {
-                flatten(ni.getList());
+                maxLength = Math.max(maxLength, count);
             }
         }
+
+        return maxLength;
     }
 
-    public Integer next() {
-        return flattenedList.get(index++);
-    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-    public boolean hasNext() {
-        return index < flattenedList.size();
+        System.out.print("Enter the array size: ");
+        int n = sc.nextInt();
+
+        int[] nums = new int[n];
+
+      
+        System.out.println("Enter " + n + " elements:");
+        for (int i = 0; i < n; i++) {
+            nums[i] = sc.nextInt();
+        }
+
+        int result = longestSetLength(nums);
+        System.out.println("Maximum size of S[k] = " + result);
+
+        sc.close();
     }
 }
 
-public class FlattenNestedList {
-    public static void main(String[] args) {
-        List<NestedInteger> nestedList = new ArrayList<>();
-        nestedList.add(new NI(1));
-        List<NestedInteger> innerList = new ArrayList<>();
-        innerList.add(new NI(2));
-        innerList.add(new NI(3));
-        nestedList.add(new NI(innerList));
-        nestedList.add(new NI(4));
-
-        NestedIterator i = new NestedIterator(nestedList);
-        System.out.print("Flattened list: ");
-        while (i.hasNext()) {
-            System.out.print(i.next() + " ");
-        }
-    }
-} 
+   
 */
+
 ```
 
 ## Output:
 
+<img width="648" height="331" alt="image" src="https://github.com/user-attachments/assets/ec3863b7-0889-4948-bf67-6b809f2f21c8" />
 
-<img width="465" height="85" alt="image" src="https://github.com/user-attachments/assets/f55d839d-8732-4ab3-ba70-1260ebf318c8" />
 
 ## Result:
-The NestedIterator class successfully flattens a nested list of integers into a single list and provides sequential access using standard iterator methods.
+The program successfully computes the longest length of the nested set s[k] for the given permutation array.
